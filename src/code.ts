@@ -1,37 +1,28 @@
-import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import { fromEvent } from 'rxjs/Observable/fromEvent';
 import 'rxjs/add/operator/share';
 
 
 
-// let obs = fromEvent(document, 'mousemove');
+const subject = new Subject();
 
-// setTimeout(() => {
-//     obs.subscribe(addItem);
-// }, 5000)
+const observer1 = subject.subscribe(
+    (data) => addItem('1 ' + data),
+    (err) => addItem(err),
+    () => addItem('Complete')
+)
 
+subject.next('First')
 
-
-
-const observable = Observable.create((observer: any) => {
-    observer.next('Hello Man');
-    observer.next('How are you?');
-    setInterval(() => {
-        observer.next('Not bad');
-    }, 3000)
-}).share()
-
-const observer = observable.subscribe(
-    (item: any) => { addItem(item) },
-    (error: any) => { addItem(error) },
-    () => { addItem('Complete') }
-);
-
-setTimeout(() => {
-    const observer2 = observable.subscribe((item: any) => addItem('Subscriver2: ' + item));
-}, 1000);
+const observer2 = subject.subscribe((data) => addItem('2 ' + data));
 
 
+subject.next('Second')
+subject.next('Third')
+
+observer2.unsubscribe()
+
+subject.next('Forth')
 
 
 
