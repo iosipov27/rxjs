@@ -1,4 +1,15 @@
 import { Observable } from 'rxjs/Observable';
+import { fromEvent } from 'rxjs/Observable/fromEvent';
+
+
+
+// let obs = fromEvent(document, 'mousemove');
+
+// setTimeout(() => {
+//     obs.subscribe(addItem);
+// }, 5000)
+
+
 
 
 const observable = Observable.create((observer: any) => {
@@ -6,8 +17,29 @@ const observable = Observable.create((observer: any) => {
     observer.next('How are you?');
     setInterval(() => {
         observer.next('Not bad');
-    }, 1000)
+    }, 2000)
 });
+
+const observer = observable.subscribe(
+    (item: any) => { addItem(item) },
+    (error: any) => { addItem(error) },
+    () => { addItem('Complete') }
+);
+
+const observer2 = observable.subscribe((item: any) => addItem(item));
+
+observer.add(observer2);
+
+setTimeout(() => {
+    observer.unsubscribe();
+}, 5000)
+
+
+
+
+
+
+
 
 
 function addItem(val: any) {
@@ -16,15 +48,3 @@ function addItem(val: any) {
     node.appendChild(text);
     document.getElementById('output').appendChild(node);
 }
-
-
-const observer = observable.subscribe(
-    (item: any) => { addItem(item) },
-    (error: any) => { addItem(error) },
-    () => { addItem('Complete') }
-);
-
-setTimeout(() => {
-    observer.complete();
-    observer.unsubscribe();
-}, 5000)
