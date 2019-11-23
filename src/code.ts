@@ -1,10 +1,10 @@
-import { Subject } from 'rxjs/Subject';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { fromEvent } from 'rxjs/Observable/fromEvent';
 import 'rxjs/add/operator/share';
 
 
 
-const subject = new Subject();
+const subject = new BehaviorSubject('First');
 
 const observer1 = subject.subscribe(
     (data) => addItem('1 ' + data),
@@ -12,7 +12,10 @@ const observer1 = subject.subscribe(
     () => addItem('Complete')
 )
 
-subject.next('First')
+subject.next('Start')
+subject.next('Start1')
+subject.next('Start2')
+subject.next('Start3')
 
 const observer2 = subject.subscribe((data) => addItem('2 ' + data));
 
