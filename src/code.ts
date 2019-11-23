@@ -1,10 +1,10 @@
-import { Subject, BehaviorSubject } from 'rxjs';
+import { Subject, BehaviorSubject, ReplaySubject } from 'rxjs';
 import { fromEvent } from 'rxjs/Observable/fromEvent';
 import 'rxjs/add/operator/share';
 
 
 
-const subject = new BehaviorSubject('First');
+const subject = new ReplaySubject(2);
 
 const observer1 = subject.subscribe(
     (data) => addItem('1 ' + data),
@@ -22,10 +22,14 @@ const observer2 = subject.subscribe((data) => addItem('2 ' + data));
 
 subject.next('Second')
 subject.next('Third')
+subject.next('Forth')
+
+
+const observer3 = subject.subscribe((data) => addItem('3  ' + data));
 
 observer2.unsubscribe()
 
-subject.next('Forth')
+subject.next('Fifth')
 
 
 
