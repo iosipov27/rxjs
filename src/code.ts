@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/Observable/fromEvent';
+import 'rxjs/add/operator/share';
 
 
 
@@ -17,8 +18,8 @@ const observable = Observable.create((observer: any) => {
     observer.next('How are you?');
     setInterval(() => {
         observer.next('Not bad');
-    }, 2000)
-});
+    }, 3000)
+}).share()
 
 const observer = observable.subscribe(
     (item: any) => { addItem(item) },
@@ -26,13 +27,11 @@ const observer = observable.subscribe(
     () => { addItem('Complete') }
 );
 
-const observer2 = observable.subscribe((item: any) => addItem(item));
-
-observer.add(observer2);
-
 setTimeout(() => {
-    observer.unsubscribe();
-}, 5000)
+    const observer2 = observable.subscribe((item: any) => addItem('Subscriver2: ' + item));
+}, 1000);
+
+
 
 
 
